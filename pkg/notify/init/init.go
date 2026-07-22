@@ -42,6 +42,7 @@ func Init(store *configstore.Store) error {
 			}
 			ogns, err := opsgenie.NewOpsGenieNotificationSender(
 				f.Zone,
+				f.APIURL,
 				f.APIKey,
 				f.Timeout,
 			)

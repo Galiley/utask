@@ -33,15 +33,21 @@ type NotificationSender struct {
 }
 
 // NewOpsGenieNotificationSender instantiates a NotificationSender
-func NewOpsGenieNotificationSender(zone, apikey, timeout string) (*NotificationSender, error) {
-	zonesToAPIUrls := map[string]client.ApiUrl{
-		ZoneDefault: client.API_URL,
-		ZoneEU:      client.API_URL_EU,
-		ZoneSandbox: client.API_URL_SANDBOX,
-	}
-	apiURL, present := zonesToAPIUrls[zone]
-	if !present {
-		return nil, errors.NotFoundf("opsgenie zone %q", zone)
+func NewOpsGenieNotificationSender(zone, apiurl, apikey, timeout string) (*NotificationSender, error) {
+	var apiURL client.ApiUrl
+	if apiurl != "" {
+		apiURL = client.ApiUrl(apiurl)
+	} else {
+		zonesToAPIUrls := map[string]client.ApiUrl{
+			ZoneDefault: client.API_URL,
+			ZoneEU:      client.API_URL_EU,
+			ZoneSandbox: client.API_URL_SANDBOX,
+		}
+		var present bool
+		apiURL, present = zonesToAPIUrls[zone]
+		if !present {
+			return nil, errors.NotFoundf("opsgenie zone %q", zone)
+		}
 	}
 	client, err := alert.NewClient(&client.Config{
 		ApiKey:         apikey,
