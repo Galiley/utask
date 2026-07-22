@@ -167,6 +167,7 @@ type TemplateNotificationStrategy struct {
 // NotifyBackendOpsGenie holds configuration for instantiating an OPsGenie notify client
 type NotifyBackendOpsGenie struct {
 	Zone    string `json:"zone"`
+	APIURL  string `json:"api_url"`
 	APIKey  string `json:"api_key"`
 	Timeout string `json:"timeout"`
 }
